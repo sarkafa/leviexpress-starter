@@ -10,20 +10,37 @@ const CityOptions = ({ name, code }) => {
   );
 };
 
+const DateOptions = ({ dateBasic, dateExtended }) => {
+  return (
+    <>
+      <option value={dateBasic}>{dateExtended}</option>
+    </>
+  );
+};
+
 export const JourneyPicker = ({ onJourneyChange }) => {
   const [fromCity, setFromCity] = useState('Vyberte');
   const [toCity, setToCity] = useState('Vyberte');
   const [date, setDate] = useState('Vyberte');
   const [cities, setCities] = useState([]);
+  const [dates, setDates] = useState([]);
 
   useEffect(() => {
     fetch('https://leviexpress-backend.herokuapp.com/api/cities')
       .then((response) => response.json())
       .then((json) => setCities(json.data));
 
+    console.log(cities);
+
     // { name: 'Praha', code: 'CZ-PRG' },
     // { name: 'Brno', code: 'CZ-BRQ' },
-  }, [cities]);
+  }, []);
+
+  useEffect(() => {
+    fetch('https://leviexpress-backend.herokuapp.com/api/dates')
+      .then((response) => response.json())
+      .then((json) => setDates(json.data));
+  }, []);
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -76,11 +93,14 @@ export const JourneyPicker = ({ onJourneyChange }) => {
               onChange={(event) => setDate(event.target.value)}
             >
               <option value="">Vyberte</option>
-              <option value="datum01">Datum 01</option>
-              <option value="datum02">Datum 02</option>
-              <option value="datum03">Datum 03</option>
-              <option value="datum04">Datum 04</option>
-              <option value="datum05">Datum 05</option>
+
+              {dates.map((date) => (
+                <DateOptions
+                  dateExtended={date.dateExtended}
+                  dateBasic={date.dateBasic}
+                  key={date.dateBasic}
+                />
+              ))}
             </select>
           </label>
           <div className="journey-picker__controls">
