@@ -1,12 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import './style.css';
 
-const Seat = ({ number, isOccupied }) => {
+const Seat = ({ number, isOccupied, onSelect, isSelected }) => {
+  const handleClick = () => {
+    onSelect(number);
+  };
   return (
     <svg
-      className={isOccupied ? 'seat--occupied seat' : 'seat'}
+      className={`seat ${isOccupied ? 'seat--occupied seat' : ''} ${
+        isSelected === number ? 'seat--selected seat' : ''
+      }`}
       viewBox="0 0 100 100"
       role="button"
+      onClick={handleClick}
     >
       <rect
         className="seat__rect"

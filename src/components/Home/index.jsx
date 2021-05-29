@@ -17,7 +17,6 @@ export const Home = () => {
       ) : (
         ''
       )}
-      {console.log(journey)}
     </main>
   );
 };
